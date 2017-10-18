@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>D3 demo</title>
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+    <script src="../js/d3.js"></script>
+    <style>
+        div.bar {
+            width: 20px;
+            height: 30px;
+            background-color: burlywood;
+            display: inline-block;
+            margin-right: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2> 绘制柱状图(div)</h2>
+    <pre>
+    </pre>
+    <script type="text/javascript">
+        // var dataset = [5, 10, 15, 20, 25];
+        var dataset = [];
+        for (var index = 0; index < 25; index++) {
+            var e = Math.random() * 30;
+            dataset.push(e);
+        }
+
+        d3.select('body')
+            .selectAll('div')
+            .data(dataset)
+            .enter()
+            .append('div')
+            // .attr('class','bar')
+            .classed('bar', true)  // 与.attr('class','bar') 效果一样
+            .style('height', function (d) {
+                var height = d * 5;
+                return height + 'px';
+            })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>D3 demo</title>
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+    <script src="../js/d3.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <h2> 柱状图（SVG rect） </h2>
+
+    <script type="text/javascript">
+        // var dataset = [5, 10, 15, 20, 25];
+
+        var dataset = [];
+        for (var index = 0; index < 20; index++) {
+            var e = Math.round(Math.random() * 80);
+            dataset.push(e);
+        }
+
+        var svgHeight = 100;
+        var svgWidth = 500;
+        var rectWidth = 20;
+
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('height', svgHeight)
+            .attr('width', svgWidth);
+        svg.selectAll('rect')
+            .data(dataset)
+            .enter()
+            .append('rect')
+            .attr('x', function (d, i) {
+                return (i + 1) * rectWidth;
+            })
+            .attr('y', function (d) {
+                return svgHeight - d;
+            })
+            .attr('width', function (d) {
+                return rectWidth - 2;
+            })
+            .attr('height', function (d) {
+                return d;
+            })
+            // .attr('fill', 'blue')
+            .attr('fill', function (d) {
+                return "rgb(0, 0, " + (d + 100) + ")";
+            })
+            .text(function (d) {
+                return d;
+            });
+        svg.selectAll('text')
+            .data(dataset)
+            .enter()
+            .append('text')
+            .text(function (d) {
+                return d;
+            })
+            .attr('x', function (d, i) {
+                if(d<10){
+                    return (i + 1) * rectWidth + 7;
+                } else{
+                    return (i + 1) * rectWidth + 2;
+                }
+                
+            })
+            .attr('y', function (d) {
+                return svgHeight - d - 2;
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "11px")
+            // .attr("fill", "white");
+            // .attr("text-anchor", "middle")
+    </script>
+</body>
+
+</html>

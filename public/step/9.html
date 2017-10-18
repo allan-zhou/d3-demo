@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>D3 demo</title>
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+    <script src="../js/d3.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <h2> 尺度&坐标轴 </h2>
+
+    <script type="text/javascript">
+        // var dataset = [
+        //     [5, 20],
+        //     [480, 90],
+        //     [250, 50],
+        //     [100, 33],
+        //     [330, 95],
+        //     [410, 12],
+        //     [475, 44],
+        //     [25, 67],
+        //     [85, 21],
+        //     [220, 88],
+        //     [600, 150]
+        // ];
+        var dataset = [];
+        for (var index = 0; index < 50; index++) {
+            var x = Math.round(Math.random() * 500);
+            var y = Math.round(Math.random() * 400);
+            dataset.push([x, y]);
+        }
+
+        var svgHeight = 100;
+        var svgWidth = 500;
+        var paddingWidth = 100;
+        var xOffset = 50;
+
+        var xScale = d3.scaleLinear()
+            .domain([0, d3.max(dataset, function (d) { return d[0] })])
+            .range([0, svgWidth]);
+        var yScale = d3.scaleLinear()
+            .domain([0, d3.max(dataset, function (d) { return d[1] })])
+            .range([svgHeight ,0]);
+
+        var xAxis = d3.axisBottom(xScale).ticks(7);
+        var yAxis = d3.axisLeft(yScale).ticks(5);
+
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('height', svgHeight + paddingWidth)
+            .attr('width', svgWidth + paddingWidth);
+        svg.selectAll('circle')
+            .data(dataset)
+            .enter()
+            .append('circle')
+            .attr('cx', function (d) {                
+                return xScale(d[0]) + xOffset;
+            })
+            .attr('cy', function (d) {
+                return yScale(d[1]) + 80;
+            })
+            .attr('r', function (d) {
+                return d[1] / 40;
+            });
+        // svg.selectAll('text')
+        //     .data(dataset)
+        //     .enter()
+        //     .append('text')
+        //     .attr('x', function (d) {
+        //         // return d[0] + (d[1]/10 + 2);
+        //         return xScale(d[0] + (d[1] / 10 + 2) + xOffset);
+        //     })
+        //     .attr('y', function (d) {
+        //         // return svgHeight - d[1];
+        //         return svgHeight - yScale(d[1]) + paddingWidth / 2;
+        //     })
+        //     .text(function (d) {
+        //         return d[0] + ',' + d[1];
+        //     })
+        //     .attr('font-size', '10')
+        //     .attr('fill', 'red')
+        svg.append('g')
+            .attr("transform", "translate(" + xOffset + ",180)")
+            .call(xAxis);
+        svg.append('g')
+            .attr("transform", "translate(" + xOffset + ",80)")
+            .call(yAxis);
+    </script>
+</body>
+
+</html>
