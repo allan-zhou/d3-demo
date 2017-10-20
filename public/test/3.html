@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>D3 demo</title>
+    <script src="../js/d3.js"></script>
+</head>
+
+<body>
+    <div>
+        <svg style="width:500px;height:200px;border:1px lightgray solid;">
+            <g transform="translate(50,50)">
+                <circle r="10" style="fill:pink" />
+                <text>i am text</text>
+            </g>
+            <g transform="translate(100,100)">
+                <circle r="10" style="fill:pink" />
+                <text>i am text</text>
+            </g>
+            <g transform="translate(150,150) scale(2)">
+                <circle r="10" style="fill:pink" />
+                <text>i am text</text>
+            </g>
+        </svg>
+    </div>
+
+    <div>
+        <svg style="width:500px;height:400px;border:1px lightgray solid;">
+            <path style="fill:none;stroke:gray;stroke-width:4px;" d="M 10,60 40,30 50,50 60,30 70,80" transform="translate(0,0)" />
+            <path style="fill:black;stroke:gray;stroke-width:4px;" d="M 10,60 40,30 50,50 60,30 70,80" transform="translate(0,100)" />
+            <path style="fill:none;stroke:gray;stroke-width:4px;" d="M 10,60 40,30 50,50 60,30 70,80Z" transform="translate(0,200)" />
+            <path style="fill:black;stroke:gray;stroke-width:4px;" d="M 10,60 40,30 50,50 60,30 70,80Z" transform="translate(0,300)"
+            />
+        </svg>
+    </div>
+    <script>
+        // d3.select('circle').remove()
+    </script>
+</body>
+
+</html>

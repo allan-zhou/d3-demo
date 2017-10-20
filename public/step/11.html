@@ -9,22 +9,45 @@
 </head>
 
 <body>
-    <h2> Joins </h2>
-
+    <h2> data Joins </h2>
+    <ol>
+        <li>i am a item!</li>
+        <li>i am a item!</li>
+        <li>i am a item!</li>
+        <li>i am a item!</li>
+        <li>i am a item!</li>
+    </ol>
     <script type="text/javascript">
         var dataset = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        // var dataset = [1, 2, 3];
 
-        var div = d3.select("body")
-            .selectAll("div")
-            .data(dataset)
-            .enter().append("div")
-            .text(function (d) { return d; });
+        build(dataset);
 
-        div = div.data([3, 6, 9, 12], function (d) { return d; });
+        setTimeout(() => {
+            var data = [11, 22, 33];
+            build(data);
+        }, 1000)
 
-        div.enter().append("div").text(function (d) { return d; });
+        function build(data) {
+            var li = d3.select("ol")
+                .selectAll("li")
+                .data(data);
 
-        div.exit().remove(); // 注释此句代码，则显示全部数据，即不会更新
+            li.enter().append('li').text((d, i) => {
+                return 'i am a item.data:' + d;
+            })
+
+            li.html((d, i) => {
+                return 'i am a item.data:' + d;
+            })
+
+            li.exit().remove();
+
+            // each() Returns values from newly bound array
+            d3.selectAll("li").each((d, i) => {
+              console.log(d);  
+            })
+        }
     </script>
 </body>
 

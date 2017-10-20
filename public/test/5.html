@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>D3 demo</title>
+    <script src="../js/d3.js"></script>
+</head>
+
+<body>
+    <div id="infoviz"></div>
+    <script type="text/javascript">
+        d3.json('https://api.github.com/users/github', (err, data) => {
+            // console.log(data);
+            // console.log(data.name);
+
+            data = Object.entries(data)
+            console.log(data);
+
+            genDiv(data)
+        })
+
+        function genDiv(data) {
+            d3.select('#infoviz')
+                .selectAll('div')
+                .data(data)
+                .enter()
+                .append('div')
+                .attr('id', (d, i) => {
+                    return d[0];
+                })
+                .html((d, i) => {
+                    return d[0] + " : " + d[1];
+                })
+        }
+    </script>
+</body>
+
+</html>
