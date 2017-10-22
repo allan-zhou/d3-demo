@@ -56,6 +56,10 @@
         var xAsix = d3.axisBottom(xScale).ticks(7);
         var yAsix = d3.axisLeft(yScale);
 
+        var line = d3.line()
+            .x(function (d) { return xScale(d.salary); })
+            .y(function (d) { return yScale(d.friends); });
+
         svg.selectAll('circle')
             .data(data)
             .enter()
@@ -73,10 +77,21 @@
             });
         svg.append('g')
             .attr('transform', `translate(0, ${svgWidth - svgPadding * 2})`)
+            .attr('id', 'xAsix')
             .call(xAsix);
         svg.append('g')
             .attr('transform', `translate(${svgPadding}, 0)`)
+            .attr('id', 'yAsix')
             .call(yAsix);
+
+        svg.append('path')
+            .attr('d', line(data.sort((a, b) => { return a.salary - b.salary; })))
+            .attr('fill', 'none')
+            .attr('stroke', 'black')
+            .attr('stroke-width', 1)
+
+        //添加y坐标轴刻度
+        svg.select("#yAsix").selectAll("line").attr("x2", "400").attr("x1", "-6");
     </script>
 </body>
 
