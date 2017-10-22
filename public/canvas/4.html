@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>canvas demo</title>
+  <style>
+    .canvas {
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>canvas text</h2>
+  <pre>
+  </pre>
+  <canvas id="canvas" class="canvas" width="500" height="300"></canvas>
+  <script type="text/javascript">
+    //
+    function draw() {
+      var canvas = document.getElementById('canvas');
+      if (canvas.getContext) {
+        var ctx = canvas.getContext('2d');
+
+        ctx.font = '80px 微软雅黑';
+        ctx.strokeText('公益中国', 10, 100);
+      }
+    }
+
+    draw();
+  </script>
+</body>
+
+</html>

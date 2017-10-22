@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 demo</title>
+  <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+  <script src="../js/d3.js"></script>
+  <style>
+    .canvas {
+      border: 1px lightgray solid;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>pie</h2>
+  <div id="infoviz"></div>
+  <canvas id="canvas" class="canvas" width="500" height="500"></canvas>
+
+  <script type="text/javascript">
+    var data = [1, 1, 2, 3];
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    ctx.translate(250, 250);
+
+    var arc = d3.arc()
+      .outerRadius(100)
+      .innerRadius(50)
+      .context(ctx);
+
+    var arcs = d3.pie()(data);
+
+    arcs.forEach((d, i) => {
+      console.log(d);
+      ctx.beginPath();
+      arc(d);
+      ctx.fillStyle = "orange"
+      ctx.fill();
+    });
+
+    ctx.beginPath();
+    arcs.forEach(arc);
+    ctx.strokeStyle = '#fff';
+    ctx.stroke();
+  </script>
+</body>
+
+</html>

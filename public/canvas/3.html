@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>canvas demo</title>
+  <style>
+    .canvas {
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>canvas arc</h2>
+  <pre>
+    arc(x, y, radius, startAngle, endAngle, anticlockwise)
+
+    radian = (Math.PI/180) * degrees
+  </pre>
+  <canvas id="canvas" class="canvas" width="500" height="500"></canvas>
+  <script type="text/javascript">
+    //
+    function draw() {
+      var canvas = document.getElementById('canvas');
+      if (canvas.getContext) {
+        var ctx = canvas.getContext('2d');
+
+        ctx.arc(50, 50, 30, 0, Math.PI, false);
+        ctx.stroke();
+
+        // ctx.arc(150, 50, 30, 0, Math.PI, false);
+        // ctx.stroke();
+
+        // ctx.arc(250, 50, 30, 0, Math.PI / 2, false);
+        // ctx.stroke();
+
+      }
+    }
+
+    draw();
+  </script>
+</body>
+
+</html>
