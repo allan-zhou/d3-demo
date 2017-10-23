@@ -46,6 +46,25 @@
             .delay(1000)
             .duration(1000)
             .attr('r', 25)
+            .transition()
+            .duration(1000)
+            .attr('r', 50)
+
+
+        var scale = d3.scaleLinear() //线性比例尺
+            .domain([1000, 100000])
+            .range([10, 300]);
+        console.log(scale(1000)); //10
+        console.log(scale(50000)); //153.53535353535355
+        console.log(scale(100000)); //300
+
+
+        var scale = d3.scaleQuantile() //量化比例尺
+            .domain([1000, 100000])
+            .range([0, 1, 2]);
+        console.log(scale(1000));   //0
+        console.log(scale(50000));  //1
+        console.log(scale(100000)); //2
     </script>
 </body>
 

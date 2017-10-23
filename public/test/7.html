@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>D3 demo</title>
+    <script src="../js/d3.js"></script>
+    <style>
+        .svg {
+            border: 1px solid lightgrey;
+        }
+    </style>
+</head>
+
+<body>
+    <svg id="svg" class="svg" width="500" height="500"></svg>
+    <svg id="svg2" class="svg" width="500" height="500"></svg>
+
+    <script type="text/javascript">
+
+        var scale = d3.scaleLinear()
+            .domain([0, 10000])
+            .range([50, 300]);
+
+        var axis = d3.axisBottom(scale).ticks(5);
+
+        d3.select("#svg")
+            .append('g')
+            .attr('transform', `translate(0, 50)`)
+            .attr('id', 'myAxis')
+            .call(axis);
+
+
+        var data = [10, 30, 50, 70, 90];
+
+        var line = d3.line()
+            .x(function (d) { return d; })
+            .y(function (d) { return d; });
+
+        d3.select("#svg2")
+            .append('path')
+            .attr('d', line(data))
+            .attr('stroke','blue');
+        
+
+    </script>
+</body>
+
+</html>
