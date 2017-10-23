@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>D3 demo</title>
+  <script src="../js/d3.js"></script>
+  <style>
+    #vedioContainer {
+      position: absolute;
+      top: 10;
+      left: 10;
+      z-index: 1;
+    }
+
+    #svgContainer {
+      position: absolute;
+      top: 10;
+      left: 10;
+      z-index: 11;
+    }
+
+    .svg {
+      border: 1px solid lightgrey;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .rect {
+      fill: orange;
+      width: 100px;
+      height: 20px;
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='vedioContainer'>
+    <embed src="https://imgcache.qq.com/tencentvideo_v1/playerv3/TPout.swf?max_age=86400&v=20161117&vid=p056421e1z2&auto=0" allowFullScreen="true"
+      quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash">
+    </embed>
+  </div>
+  <div id='svgContainer'>
+
+  </div>
+
+  <script type="text/javascript">
+    var svgHeight = d3.select('embed').attr('height') - 50;
+    var svgWidth = d3.select('embed').attr('width');
+
+    var svg = d3.select('#svgContainer')
+        .append('svg')
+        .attr('height', svgHeight)
+        .attr('width', svgWidth);
+
+    // var data = [
+    //   { name: '甲', message: '你好' },
+    //   { name: '乙', message: '你好' },
+    //   { name: '丙', message: '你好' },
+    //   { name: '丁', message: '你好' },
+    // ];
+
+    var users = ["甲", "乙", "丙", "丁", "张三", "李四", "王五"];
+    var messages = ["套路", "吓死宝宝了", "厉害了我的哥", "感觉身体被掏空", "因吹斯汀", "你咋不上天呢!"]
+
+    var db = [];
+    setInterval(() => {
+      var username = users[random(0, users.length - 1)];
+      var msg = messages[random(0, messages.length - 1)];
+      db.push({ name: username, message: msg });
+      buildBulletMessage(db);
+    }, 3000);
+
+    function buildBulletMessage(data) {
+      svg.selectAll('text')
+        .data(data)
+        .enter()
+        .append('text')
+        .attr('class', 'rect')
+        .attr('x', (d, i) => {
+          return svgWidth;
+        })
+        .attr('y', (d, i) => {
+          return random(20, svgHeight - 50);
+        })
+        .transition()
+        .duration(8000)
+        .ease(d3.easeLinear)
+        .attr('x', 0)
+        .text((d) => {
+          return d.name + ':' + d.message;
+        })
+        .remove()
+    }
+
+    function random(n, m) {
+      var random = Math.floor(Math.random() * (m - n + 1) + n);
+      return random;
+    }
+  </script>
+</body>
+
+</html>
