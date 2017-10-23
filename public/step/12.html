@@ -51,8 +51,8 @@
         var yScale = d3.scaleLinear()
             .domain([0, d3.max(data, (d) => { return d.friends }) + 5])
             .range([svgWidth - svgPadding * 2, svgPadding]);
-        // console.log(xScale(74000));
 
+        
         var xAsix = d3.axisBottom(xScale).ticks(7);
         var yAsix = d3.axisLeft(yScale);
 
@@ -85,13 +85,24 @@
             .call(yAsix);
 
         svg.append('path')
-            .attr('d', line(data.sort((a, b) => { return a.salary - b.salary; })))
+            .attr('d', (d) => {
+                return line(data.sort((a, b) => { return a.salary - b.salary; }))
+            })
             .attr('fill', 'none')
             .attr('stroke', 'black')
             .attr('stroke-width', 1)
 
         //添加y坐标轴刻度
         svg.select("#yAsix").selectAll("line").attr("x2", "400").attr("x1", "-6");
+
+
+        var scale = d3.scaleLinear()
+        .domain([1000,100000])
+        .range([10,300]);
+
+        console.log(scale(1000)); //10
+        console.log(scale(50000)); //153.53535353535355
+        console.log(scale(100000)); //300
     </script>
 </body>
 
