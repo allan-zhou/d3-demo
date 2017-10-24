@@ -55,13 +55,6 @@
         .attr('height', svgHeight)
         .attr('width', svgWidth);
 
-    // var data = [
-    //   { name: '甲', message: '你好' },
-    //   { name: '乙', message: '你好' },
-    //   { name: '丙', message: '你好' },
-    //   { name: '丁', message: '你好' },
-    // ];
-
     var users = ["甲", "乙", "丙", "丁", "张三", "李四", "王五"];
     var messages = ["套路", "吓死宝宝了", "厉害了我的哥", "感觉身体被掏空", "因吹斯汀", "你咋不上天呢!"]
 
@@ -71,7 +64,7 @@
       var msg = messages[random(0, messages.length - 1)];
       db.push({ name: username, message: msg });
       buildBulletMessage(db);
-    }, 3000);
+    }, 1000);
 
     function buildBulletMessage(data) {
       svg.selectAll('text')
@@ -92,7 +85,9 @@
         .text((d) => {
           return d.name + ':' + d.message;
         })
-        .remove()
+        .remove();
+      
+      // db.pop(data);
     }
 
     function random(n, m) {
