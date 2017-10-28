@@ -58,7 +58,8 @@
 
         var line = d3.line()
             .x(function (d) { return xScale(d.salary); })
-            .y(function (d) { return yScale(d.friends); });
+            .y(function (d) { return yScale(d.friends); })
+            // .curve(d3.curveCatmullRom.alpha(0.5))
 
         svg.selectAll('circle')
             .data(data)
