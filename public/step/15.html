@@ -1,0 +1,60 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>china map</title>
+  <script src="../js/d3.js"></script>
+</head>
+
+<body>
+  <div id="mapContainer"></div>
+
+  <script>
+    var svgWidth = 800;
+    var svgHeight = 600;
+
+    var svg = d3.select('#mapContainer')
+      .append('svg')
+      .attr('width', svgWidth)
+      .attr('height', svgHeight)
+      .append('g')
+      .attr('transform', 'translate(0,0)');
+
+    var projection = d3.geoMercator()
+      .center([107, 31])
+      .scale(650)
+      .translate([svgWidth / 2, svgHeight / 1.7]);
+
+    var path = d3.geoPath()
+      .projection(projection);
+
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
+    // console.log(color(0));
+
+    d3.json('../js/china.geojson', (err, data) => {
+      // console.log(data);
+      svg.selectAll('path')
+        .data(data.features)
+        .enter()
+        .append('path')
+        .attr('stroke', '#000')
+        .attr('stroke-width', 1)
+        .attr('fill', (d, i) => {
+          return color(i);
+        })
+        .attr('d', path)
+        .on('mouseover', function(d, i) { //不能使用箭头函数
+          d3.select(this)
+            .attr('fill', 'yellow');
+        })
+        .on('mouseout', function(d, i) { //不能使用箭头函数
+          d3.select(this)
+            .attr('fill', color(i));
+        })
+    })
+  </script>
+</body>
+
+</html>
