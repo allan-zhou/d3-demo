@@ -20,8 +20,8 @@
 <body>
   <h2>pie</h2>
   <div id="infoviz"></div>
-  <canvas id="canvas" class="canvas" width="300" height="300"></canvas>
   <svg id="svg" class="svg" width="300" height="300"></svg>
+  <!-- <canvas id="canvas" class="canvas" width="300" height="300"></canvas> -->
   <svg id="svg2" class="svg" width="300" height="300"></svg>
   <script type="text/javascript">
     var data = [1, 1, 2, 3];
@@ -29,52 +29,84 @@
     var arcs = d3.pie()(data);
 
     var arc = d3.arc()
-      .outerRadius(50)
+      .outerRadius(80)
       .innerRadius(25);
-    console.log(arc(arcs[0]));
-    d3.select('#svg2')
-    .append('g')
-    .attr("transform", "translate(150,150)")
-    .append('path')
-    .attr('d', arc(arcs[0]))
-    .style('stroke', 'red')
-    .style('stroke-width', 2)
+    // console.log(arc(arcs[0]));
 
-    d3.select('#svg')
-      .append('g')
-      .attr("transform", "translate(150,150)")
-      .selectAll('path')
-      .data(arcs)
-      .enter()
-      .append('path')
-      // .attr('d', arc2)
-      .attr('d', (d) => {
-        return arc(d);
-      })
-      .style('fill', 'blue')
-      .style('stroke', 'white')
-      .style('stroke-width', 2)
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-    // canvas 方式
-    var canvas = document.getElementById('canvas');
-    var ctx = canvas.getContext('2d');
-    ctx.translate(150, 150);
+    buildArc();
+    buildBySvg();
+    // buildByCanvas();
 
-    var arc2 = d3.arc()
-      .outerRadius(50)
-      .innerRadius(25)
-      .context(ctx);
-    arcs.forEach((d, i) => {
+    function buildArc() { // 绘制Arc
+      d3.select('#svg2')
+        .append('g')
+        .attr("transform", "translate(150,150)")
+        .append('path')
+        .attr('d', arc(arcs[0]))
+        .style('stroke', 'red')
+        .style('stroke-width', 2)
+    }
+
+    function buildBySvg() { // SVG 方式绘制pie
+      var svg = d3.select('#svg')
+        .append('g')
+        .attr("transform", "translate(150,150)");
+
+      svg.selectAll('path')
+        .data(arcs)
+        .enter()
+        .append('path')
+        .attr('d', (d) => {
+          return arc(d);
+        })
+        .style('fill', (d, i) => {
+          return color(i);
+        })
+        .style('stroke', 'white')
+        .style('stroke-width', 2)
+        .on('mouseover', function (d, i) {
+          d3.select(this).style('fill', 'yellow');
+        })
+        .on('mouseout', function (d, i) {
+          d3.select(this).style('fill', color(i));
+        });
+      svg.selectAll('text')
+        .data(arcs)
+        .enter()
+        .append('text')
+        .attr('transform', (d, i) => {
+          // console.log(arc.centroid(d));
+          return `translate(${arc.centroid(d)})`;
+        })
+        .attr('text-anchor','middle')
+        .text((d) => {
+          return d.value;
+        })
+    }
+
+    function buildByCanvas(params) { // canvas 方式绘制pie
+      var canvas = document.getElementById('canvas');
+      var ctx = canvas.getContext('2d');
+      ctx.translate(150, 150);
+
+      var arc2 = d3.arc()
+        .outerRadius(50)
+        .innerRadius(25)
+        .context(ctx);
+      arcs.forEach((d, i) => {
+        ctx.beginPath();
+        arc2(d);
+        ctx.fillStyle = "orange"
+        ctx.fill();
+      });
+
       ctx.beginPath();
-      arc2(d);
-      ctx.fillStyle = "orange"
-      ctx.fill();
-    });
-
-    ctx.beginPath();
-    arcs.forEach(arc2);
-    ctx.strokeStyle = '#fff';
-    ctx.stroke();
+      arcs.forEach(arc2);
+      ctx.strokeStyle = '#fff';
+      ctx.stroke();
+    }
   </script>
 </body>
 

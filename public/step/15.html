@@ -34,6 +34,11 @@
     // console.log(color(0));
 
     d3.json('../js/china.geojson', (err, data) => {
+        bulidMap(data);
+        buildProvinceName(data);
+    })
+
+    function bulidMap(data) {
       // console.log(data);
       svg.selectAll('path')
         .data(data.features)
@@ -45,15 +50,34 @@
           return color(i);
         })
         .attr('d', path)
-        .on('mouseover', function(d, i) { //不能使用箭头函数
+        .on('mouseover', function (d, i) { //不能使用箭头函数
           d3.select(this)
-            .attr('fill', 'yellow');
+            .style('fill', 'yellow');
         })
-        .on('mouseout', function(d, i) { //不能使用箭头函数
+        .on('mouseout', function (d, i) { //不能使用箭头函数
           d3.select(this)
-            .attr('fill', color(i));
+            .style('fill', color(i));
         })
-    })
+    }
+
+
+    function buildProvinceName(data) {
+      svg.selectAll('text')
+      .data(data.features)
+      .enter()
+      .append('text')
+      .attr('transform',(d,i) => {
+        // console.log(path.centroid(d));
+        return `translate(${path.centroid(d)})`;
+      })
+      .attr('text-anchor','middle')
+      .style('font-size',12)
+      .text((d) => {
+        // console.log(d.properties.name);
+        return d.properties.name;
+      })
+    }
+
   </script>
 </body>
 
