@@ -31,15 +31,14 @@
       .projection(projection);
 
     var color = d3.scaleOrdinal(d3.schemeCategory20);
-    // console.log(color(0));
 
     d3.json('../js/china.geojson', (err, data) => {
-        bulidMap(data);
-        buildProvinceName(data);
+      bulidMap(data);
+      buildProvinceName(data);
     })
 
     function bulidMap(data) {
-      // console.log(data);
+
       svg.selectAll('path')
         .data(data.features)
         .enter()
@@ -63,21 +62,32 @@
 
     function buildProvinceName(data) {
       svg.selectAll('text')
-      .data(data.features)
-      .enter()
-      .append('text')
-      .attr('transform',(d,i) => {
-        // console.log(path.centroid(d));
-        return `translate(${path.centroid(d)})`;
-      })
-      .attr('text-anchor','middle')
-      .style('font-size',12)
-      .text((d) => {
-        // console.log(d.properties.name);
-        return d.properties.name;
-      })
+        .data(data.features)
+        .enter()
+        .append('text')
+        .attr('transform', (d, i) => {
+          // console.log(path.centroid(d));
+          return `translate(${path.centroid(d)})`;
+        })
+        .attr('text-anchor', 'middle')
+        .style('font-size', 12)
+        .text((d) => {
+          // console.log(d.properties.name);
+          return d.properties.name;
+        })
     }
 
+    function buildHenan() {
+      var henan = {}
+
+      svg.append('path')
+        .attr('d', path(henan))
+        .style('storke-width', 1)
+        .style('stroke', '#000')
+        .style('fill', 'lightblue')
+
+      console.log(path(henan));
+    }
   </script>
 </body>
 

@@ -24,6 +24,7 @@
   <!-- <canvas id="canvas" class="canvas" width="300" height="300"></canvas> -->
   <svg id="svg2" class="svg" width="300" height="300"></svg>
   <script type="text/javascript">
+  
     var data = [1, 1, 2, 3];
 
     var arcs = d3.pie()(data);
@@ -31,13 +32,8 @@
     var arc = d3.arc()
       .outerRadius(80)
       .innerRadius(25);
-    // console.log(arc(arcs[0]));
 
     var color = d3.scaleOrdinal(d3.schemeCategory10);
-
-    buildArc();
-    buildBySvg();
-    // buildByCanvas();
 
     function buildArc() { // 绘制Arc
       d3.select('#svg2')
@@ -50,10 +46,10 @@
     }
 
     function buildBySvg() { // SVG 方式绘制pie
+
       var svg = d3.select('#svg')
         .append('g')
         .attr("transform", "translate(150,150)");
-
       svg.selectAll('path')
         .data(arcs)
         .enter()
@@ -72,15 +68,15 @@
         .on('mouseout', function (d, i) {
           d3.select(this).style('fill', color(i));
         });
+
       svg.selectAll('text')
         .data(arcs)
         .enter()
         .append('text')
         .attr('transform', (d, i) => {
-          // console.log(arc.centroid(d));
           return `translate(${arc.centroid(d)})`;
         })
-        .attr('text-anchor','middle')
+        .attr('text-anchor', 'middle')
         .text((d) => {
           return d.value;
         })
@@ -107,6 +103,11 @@
       ctx.strokeStyle = '#fff';
       ctx.stroke();
     }
+
+
+    buildArc();
+    buildBySvg();
+    buildByCanvas();
   </script>
 </body>
 
