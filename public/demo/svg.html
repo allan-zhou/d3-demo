@@ -3,12 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>D3 demo</title>
-    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
-    <script src="../js/d3.js"></script>
-    <style>
-
-    </style>
+    <title>svg demo</title>
+    <script src="https://cdn.bootcss.com/d3/4.11.0/d3.min.js"></script>
+    <!-- <script src="../js/d3.js"></script> -->
 </head>
 
 <body>
@@ -44,7 +41,7 @@
         <polygon points="0,0 50,50 100,0" style="stroke:black;stroke-width:1;fill:white;" />
     </svg>
     <svg width="100" height="100">
-        <polygon points="50,0 100,50 50,100 0,50" style="stroke:black;stroke-width:1" />
+        <polygon points="50,0 100,50 50,100 0,50" style="stroke:black;fill:lightblue; stroke-width:1" />
     </svg>
     <svg width="100" height="100">
         <polygon points="50,0 50,100 0,50 100,50" style="stroke:black;stroke-width:1;fill:antiquewhite;" />
@@ -54,19 +51,17 @@
     <svg width="100" height="100">
         <polyline points="0,0 50,50 100,0" style="stroke:black;stroke-width:1;fill:white;" />
     </svg>
+    <svg width="100" height="100">
+        <polyline points="50,0 100,50 50,100 0,50" style="stroke:black;fill:lightblue;stroke-width:1" />
+    </svg>
+    <svg width="100" height="100">
+        <polyline points="50,0 50,100 0,50 100,50" style="stroke:black;stroke-width:1;fill:antiquewhite;" />
+    </svg>
+
 
     <h3>path</h3>
     <img src="../images/smile.svg" width="100"  height="100" alt="">
-
-
-    <h2>contrast</h2>
-    <svg style="width:500px;height:100px;border:1px lightgray solid;">
-        <rect x="10" y="10" width="50px" height="50px" style="fill:plum;" />
-        <rect x="70" y="10" width="50px" height="50px" style="fill:plum;stroke-width:2px;stroke:cornflowerblue;" />
-        <rect x="130" y="10" width="50px" height="50px" style="fill:plum;stroke-width:4px;stroke:cornflowerblue;" />
-        <rect x="190" y="10" width="50px" height="50px" style="fill:plum;stroke-width:6px;stroke:cornflowerblue;" />
-        <rect x="270" y="10" width="50px" height="50px" style="fill:plum;stroke-width:18px;stroke:cornflowerblue;" />
-    </svg>
+    <img src="../images/heart.svg" width="100"  height="100" alt="">
 </body>
 
 </html>
