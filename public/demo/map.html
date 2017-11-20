@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>map demo</title>
+    <script src="https://cdn.bootcss.com/d3/4.11.0/d3.min.js"></script>
+    <style>
+        .svg {
+            border: 1px solid lightgrey;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var svgWidth = 1000, svgHeight = 800;
+
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('class', 'svg')
+            .style('width', svgWidth)
+            .style('height', svgHeight)
+            .append('g')
+            .attr('transform', 'translate(0,0)');
+
+        var projection = d3.geoMercator()
+            .center([107, 31])
+            .scale(850)
+            .translate([svgWidth / 2, svgHeight / 1.6]);
+
+        var path = d3.geoPath()
+            .projection(projection);
+
+
+        var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+        d3.json('../js/china.geojson', (err, data) => {
+            bulidMap(data);
+            buildProvinceName(data);
+        });
+
+        function bulidMap(data) {
+            svg.selectAll('path')
+                .data(data.features)
+                .enter().append('path')
+                .attr('stroke', '#000')
+                .attr('stroke-width', 1)
+                .attr('d', path)
+                .style('fill', (d, i) => {
+                    return color(i);
+                })
+                .on('mouseover', function (d, i) {
+                    d3.select(this).style('fill', 'yellow');
+                })
+                .on('mouseout', function (d, i) {
+                    d3.select(this).style('fill', color(i));
+                })
+        }
+
+        function buildProvinceName(data) {
+            svg.selectAll('text')
+                .data(data.features)
+                .enter()
+                .append('text')
+                .attr('transform', (d, i) => {
+                    return `translate(${path.centroid(d)})`;
+                })
+                .attr('text-anchor', 'middle')
+                .style('font-size', 12)
+                .text((d) => {
+                    return d.properties.name;
+                })
+        }
+    </script>
+</body>
+
+</html>

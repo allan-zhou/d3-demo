@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>arc demo</title>
+    <script src="https://cdn.bootcss.com/d3/4.11.0/d3.min.js"></script>
+    <style>
+        .svg {
+            border: 1px solid lightgrey;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var data = [1, 1, 2, 3];
+
+        var svgWidth = 640, svgHeight = 480;
+
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('class', 'svg')
+            .style('width', svgWidth)
+            .style('height', svgHeight);
+
+        var arcs = d3.pie()(data);
+        console.log(arcs);
+
+        var arc = d3.arc()
+            .outerRadius(200)
+            .innerRadius(100);
+        console.log(arc(arcs[0]));
+
+        svg.append('g')
+            .attr('transform', 'translate(320, 240)')
+            .append('path')
+            .attr('d', (d, i) => {
+                return arc(arcs[0]);
+            })
+            .style('fill', 'deepskyblue')
+    </script>
+</body>
+
+</html>

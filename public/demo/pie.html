@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>arc demo</title>
+    <script src="https://cdn.bootcss.com/d3/4.11.0/d3.min.js"></script>
+    <style>
+        .svg {
+            border: 1px solid lightgrey;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var data = [{ type: '食品饮料', ratio: 8.9 },
+        { type: '数码家电', ratio: 2 },
+        { type: '生活日用', ratio: 4 },
+        { type: '珠宝首饰', ratio: 2 },
+        { type: '服装鞋帽', ratio: 5.5 },
+        { type: '健康护理', ratio: 2.5 },
+        { type: '母婴用品', ratio: 2.7 }]
+
+        var svgWidth = 640, svgHeight = 480;
+
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('class', 'svg')
+            .style('width', svgWidth)
+            .style('height', svgHeight);
+
+        var arcs = d3.pie()(data.map(e => e.ratio));
+        console.log(arcs);
+
+        var arc = d3.arc()
+            .outerRadius(200)
+            .innerRadius(100);
+
+        var arc_big = d3.arc()
+            .outerRadius(210)
+            .innerRadius(110);
+
+        var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        svg.append('g')
+            .attr('transform', 'translate(320, 240)')
+            .selectAll('path')
+            .data(arcs)
+            .enter().append('path')
+            .attr('d', (d, i) => {
+                return arc(d);
+            })
+            .style('fill', (d, i) => {
+                return color(i);
+            })
+            .style('stroke', '#fff')
+            .style('stroke-width', 3)
+            .on('mouseover', function (d, i) {
+                d3.select(this).attr('d', (d, i) => {
+                    return arc_big(d);
+                })
+            })
+            .on('mouseout', function (d, i) {
+                d3.select(this).attr('d', (d, i) => {
+                    return arc(d);
+                })
+            })            
+
+        svg.append('g')
+            .attr('transform', 'translate(320, 240)')
+            .selectAll('text')
+            .data(arcs)
+            .enter()
+            .append('text')
+            .attr('transform', (d, i) => {
+                return `translate(${arc.centroid(d)})`;
+            })
+            .attr('text-anchor', 'middle')
+            .style('font-size', 13)
+            .text((d) => {
+                return data.find(e => e.ratio == d.value).type + ' ' + d.value + '%';
+            })
+    </script>
+</body>
+
+</html>
