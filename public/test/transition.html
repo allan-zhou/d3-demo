@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>D3 demo</title>
+    <script src="../js/d3.js"></script>
+    <style>
+        .svg {
+            border: 1px solid lightgrey;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+        var svgWidth = 640, svgHeight = 480;
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('width', svgWidth)
+            .attr('height', svgHeight)
+            .attr('class', 'svg')
+            .attr('id', 'svg')
+
+        var xScale = d3.scaleLinear()
+            .range([0, svgWidth - 30]);
+        var yScale = d3.scaleLinear()
+            .range([svgHeight -50, 0])
+
+        var heartPath = "m241.48028,128.27856c86.88299,-249.25449 427.29341,0 0,320.47006c-427.29341,-320.47006 -86.88299,-569.72454 0,-320.47006z";
+        svg.append('path')
+            .attr('d', heartPath)
+            .attr('transform', 'translate(0,0) scale(0.05)')
+            .transition()
+            .duration(3000)
+            .ease(d3.easeQuadOut)
+            .attrTween('transform', () => {
+                return function (t) {
+                    var x = xScale(t);
+                    var y = yScale(d3.easeQuadOut(t));
+                    return `translate(${x},${y}) scale(0.05)`;
+                }
+            })
+
+
+        var i2 = d3.interpolateTransformSvg(`translate(0,0) scale(0.05)`, `translate(100,100) scale(0.05)`);
+        console.log(i2(0.5));
+    </script>
+</body>
+
+</html>

@@ -178,61 +178,38 @@
         function likeClick(e) {
             likeTimes++;
             d3.select('#likeTimesText').html(likeTimes);
-            buildCircle();
+            drawHeart();
         }
-
-        var startPoint = { x: svgWidth - 5, y: svgHeight - 10 };
-        var endPoint = { x: svgWidth - 100, y: 100 };
 
         var xScale = d3.scaleLinear()
-            .range([startPoint.x, startPoint.y]);
+            .range([svgWidth - 15, svgWidth - 150]);
         var yScale = d3.scaleLinear()
-            .range([endPoint.x, endPoint.y])
+            .range([svgWidth - 15, 50])
 
-        function buildLine(params) {
-            var path = d3.line()
-                .x(function (t) { return xScale(t); })
-                .y(function (t) { return yScale(d3.easeCircleOut(t)); });
+        var easeType = ['easeQuadIn', 'easeQuadOut', 'easeQuadInOut', 'easeCubicIn', 'easeCubicOut', 'easeCubicInOut',
+            'easeBounceIn', 'easeBounceOut', 'easeBounceInOut', 'easeCircleIn', 'easeCircleOut', 'easeCircleInOut'];
 
-            var line = svg.append("g")
-                .append("path")
-                .datum(d3.range(0, 1, 0.002).concat(1));
-
-            line.attr("d", path)
-                .style('stroke-width', 1)
-                .style('stroke', 'black')
-                .style('fill', 'none')
-        }
-
-        var easeType = ['easeQuadIn', 'easeQuadOut', 'easeQuadInOut','easeCubicIn', 'easeCubicOut', 'easeCubicInOut',
-            'easeBounceIn', 'easeBounceOut', 'easeBounceInOut','easeCircleIn', 'easeCircleOut', 'easeCircleInOut'];
-        var colorType = ['green', 'blue', 'red', 'orange'];
-
-        function buildCircle() {
+        var heartPath = "m241.48028,128.27856c86.88299,-249.25449 427.29341,0 0,320.47006c-427.29341,-320.47006 -86.88299,-569.72454 0,-320.47006z";
+        function drawHeart() {
             var easingType = easeType[random(0, easeType.length - 1)];
-            var colorType1 = colorType[random(0, colorType.length - 1)];
-            var colorType2 = colorType[random(0, colorType.length - 1)];
-            svg.append('circle')
+
+            svg.append('path')
+                .attr('d', heartPath)
                 .transition()
-                .duration(3000)
+                .duration(2000)
                 .ease(d3.easeLinear)
-                .attrTween('cx', () => {
+                .attrTween('transform', () => {
                     return function (t) {
-                        return xScale(t);
+                        var x = xScale(t);
+                        var y = yScale(d3[easingType](t));
+                        return `translate(${x},${y}) scale(0.05)`;
                     }
                 })
-                .attrTween('cy', () => {
-                    return function (t) {
-                        return yScale(d3[easingType](t))
-                    }
-                })
-                .attr('r', 5)
                 .styleTween('fill', () => {
-                    return d3.interpolateRgb(colorType1, colorType2);
+                    return d3.interpolateRgb('orange', 'red');
                 })
                 .remove()
         }
-
 
         function random(n, m) {
             var random = Math.floor(Math.random() * (m - n + 1) + n);

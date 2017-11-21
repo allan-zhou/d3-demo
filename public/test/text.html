@@ -54,10 +54,21 @@
             .text('hello svg');
 
         var heartPath = "m241.48028,128.27856c86.88299,-249.25449 427.29341,0 0,320.47006c-427.29341,-320.47006 -86.88299,-569.72454 0,-320.47006z";
-        svg2.append('g')
-            .attr('transform','translate(150,150) scale(0.1)')
-            .append('path')
-            .attr('d', heartPath);
+        svg2.append('path')
+            .attr('d', heartPath)
+            .transition()
+            .duration(3000)
+            .ease(d3.easeQuadOut)
+            .attr('transform', 'scale(0.05)')
+            .attrTween('transform', () => {
+                return d3.interpolateTransformSvg('translate(0,0) scale(0.05)', 'translate(150,150) scale(0.05)');
+            })
+
+        var i = d3.interpolateTransformCss('translate(0,0) scale(0.05)', 'translate(100,100) scale(0.05)');
+        // console.log(i(0.5));
+
+        var i2 = d3.interpolateTransformSvg('translate(0,0) scale(0.05)', 'translate(100,100) scale(0.05)');
+        console.log(i2(0.5));
     </script>
 </body>
 
