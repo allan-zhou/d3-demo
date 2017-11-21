@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>D3 demo</title>
-    <script src="../js/d3.js"></script>
+    <script src="https://cdn.bootcss.com/d3/4.11.0/d3.min.js"></script>
     <style>
         #vedioContainer {
             position: relative;
@@ -99,15 +99,6 @@
 
         var users = ["甲", "乙", "丙", "丁", "张三", "李四", "王五"];
         var messages = ["套路", "吓死宝宝了", "厉害了我的哥", "感觉身体被掏空", "因吹斯汀", "你咋不上天呢!"]
-
-        setInterval(() => {
-            var username = users[random(0, users.length - 1)];
-            var msg = messages[random(0, messages.length - 1)];
-            var data = { name: username, message: msg };
-            if (bulletSwithOn) {
-                buildBulletMessage(data);
-            }
-        }, 1000);
 
         function buildBulletMessage(data) {
             svg.append('text')
@@ -213,43 +204,50 @@
                 .style('fill', 'none')
         }
 
-        var easeType = ['easeQuadIn', 'easeQuadOut', 'easeQuadInOut',
-            'easeCubicIn', 'easeCubicOut', 'easeCubicInOut',
-            'easeBounceIn', 'easeBounceOut', 'easeBounceInOut',
-            'easeCircleIn', 'easeCircleOut', 'easeCircleInOut'];
+        var easeType = ['easeQuadIn', 'easeQuadOut', 'easeQuadInOut','easeCubicIn', 'easeCubicOut', 'easeCubicInOut',
+            'easeBounceIn', 'easeBounceOut', 'easeBounceInOut','easeCircleIn', 'easeCircleOut', 'easeCircleInOut'];
         var colorType = ['green', 'blue', 'red', 'orange'];
-        var heartPath = "m241.48028,128.27856c86.88299,-249.25449 427.29341,0 0,320.47006c-427.29341,-320.47006 -86.88299,-569.72454 0,-320.47006z";
 
         function buildCircle() {
             var easingType = easeType[random(0, easeType.length - 1)];
             var colorType1 = colorType[random(0, colorType.length - 1)];
             var colorType2 = colorType[random(0, colorType.length - 1)];
             svg.append('circle')
-              .transition()
-              .duration(3000)
-              .ease(d3.easeLinear)
-              .attrTween('cx', () => {
-                return function (t) {
-                  return xScale(t);
-                }
-              })
-              .attrTween('cy', () => {
-                return function (t) {
-                  return yScale(d3[easingType](t))
-                }
-              })
-              .attr('r', 5)
-              .styleTween('fill', () => {
-                return d3.interpolateRgb(colorType1, colorType2);
-              })
-              .remove()
-          }
+                .transition()
+                .duration(3000)
+                .ease(d3.easeLinear)
+                .attrTween('cx', () => {
+                    return function (t) {
+                        return xScale(t);
+                    }
+                })
+                .attrTween('cy', () => {
+                    return function (t) {
+                        return yScale(d3[easingType](t))
+                    }
+                })
+                .attr('r', 5)
+                .styleTween('fill', () => {
+                    return d3.interpolateRgb(colorType1, colorType2);
+                })
+                .remove()
+        }
 
 
         function random(n, m) {
             var random = Math.floor(Math.random() * (m - n + 1) + n);
             return random;
         }
+
+
+        setInterval(() => {
+            var username = users[random(0, users.length - 1)];
+            var msg = messages[random(0, messages.length - 1)];
+            var data = { name: username, message: msg };
+            if (bulletSwithOn) {
+                buildBulletMessage(data);
+            }
+        }, 1000);
     </script>
 </body>
 

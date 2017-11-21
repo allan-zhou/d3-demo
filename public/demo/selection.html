@@ -35,75 +35,86 @@
 
         var svgWidth = 640, svgHeight = 480, svgPaddingBottom = 50;
         var rectWidth = 50;
-
         var svg = d3.select('body')
             .append('svg')
             .attr('class', 'svg')
             .style('width', svgWidth)
             .style('height', svgHeight);
 
-        svg.selectAll('rect')
-            .data(data)
-            .enter().append('rect')
-            .attr('class', 'rect')
-            .attr('width', rectWidth)
-            .attr('height', (d, i) => {
-                return d.count * 0.5;
-            })
-            .attr('x', (d, i) => {
-                return (rectWidth + 3) * i;
-            })
-            .attr('y', (d, i) => {
-                return svgHeight - (d.count * 0.5) - svgPaddingBottom;
-            })
-            .on('mouseover', function (d, i) {
-                d3.select(this).attr('class', 'rect-over');
-            })
-            .on('mouseout', function (d, i) {
-                d3.select(this).attr('class', 'rect');
-            });
+        function drawRect() {
+            svg.selectAll('rect')
+                .data(data)
+                .enter().append('rect')
+                .attr('class', 'rect')
+                .attr('width', rectWidth)
+                .attr('height', (d, i) => {
+                    return d.count * 0.5;
+                })
+                .attr('x', (d, i) => {
+                    return (rectWidth + 3) * i;
+                })
+                .attr('y', (d, i) => {
+                    return svgHeight - (d.count * 0.5) - svgPaddingBottom;
+                })
+                .on('mouseover', function (d, i) {
+                    d3.select(this).attr('class', 'rect-over');
+                })
+                .on('mouseout', function (d, i) {
+                    d3.select(this).attr('class', 'rect');
+                });
+        }
 
-        svg.append('g').selectAll('text') //添加文本-数量
-            .data(data)
-            .enter().append('text')
-            .attr('x', (d, i) => {
-                return (rectWidth + 3) * i + 25;
-            })
-            .attr('y', (d, i) => {
-                return svgHeight - (d.count * 0.5) - svgPaddingBottom - 2;
-            })
-            .attr('text-anchor', 'middle')
-            .text((d) => {
-                return d.count;
-            });
+        function drawTextCount() {
+            svg.append('g').selectAll('text') //添加文本-数量
+                .data(data)
+                .enter().append('text')
+                .attr('x', (d, i) => {
+                    return (rectWidth + 3) * i + 25;
+                })
+                .attr('y', (d, i) => {
+                    return svgHeight - (d.count * 0.5) - svgPaddingBottom - 2;
+                })
+                .attr('text-anchor', 'middle')
+                .text((d) => {
+                    return d.count;
+                });
+        }
 
+        function drawTextType() {
+            svg.append('g').selectAll('text') //添加文本-类型
+                .data(data)
+                .enter().append('text')
+                .style('font-size', 14)
+                .append('textPath')
+                .attr('xlink:href', (d, i) => {
+                    return '#type_line' + i;
+                })
+                .text((d) => {
+                    return d.type;
+                })
+        }
 
-        svg.append('g').selectAll('text') //添加文本-类型
-            .data(data)
-            .enter().append('text')
-            .style('font-size', 14)
-            .append('textPath')
-            .attr('xlink:href', (d, i) => {
-                return '#type_line' + i;
-            })
-            .text((d) => {
-                return d.type;
-            })
+        function drawTextTypePath() {
+            svg.append('g').selectAll('path')
+                .data(data)
+                .enter().append('path')
+                .attr('d', (d, i) => {
+                    var path = d3.path();
+                    path.moveTo((rectWidth + 3) * i + 5, svgHeight - svgPaddingBottom + 10);
+                    path.lineTo((rectWidth + 3) * i + 50, svgHeight - svgPaddingBottom + 14 + 30);
+                    path.closePath();
+                    return path.toString();
+                })
+                .attr('id', (d, i) => {
+                    return 'type_line' + i;
+                })
+            // .style('stroke', '#000')
+        }
 
-        svg.append('g').selectAll('path')
-            .data(data)
-            .enter().append('path')
-            .attr('d', (d, i) => {
-                var path = d3.path();
-                path.moveTo((rectWidth + 3) * i + 5, svgHeight - svgPaddingBottom + 10);
-                path.lineTo((rectWidth + 3) * i + 50, svgHeight - svgPaddingBottom + 14 + 30);
-                path.closePath();
-                return path.toString();
-            })
-            .attr('id', (d, i) => {
-                return 'type_line' + i;
-            })
-            .style('stroke', '#000')
+        drawRect();
+        drawTextCount();
+        drawTextType();
+        drawTextTypePath();
     </script>
 </body>
 

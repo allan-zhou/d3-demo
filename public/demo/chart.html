@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>arc demo</title>
+    <script src="https://cdn.bootcss.com/d3/4.11.0/d3.min.js"></script>
+    <style>
+        .svg {
+            border: 1px solid lightgrey;
+        }
+
+        .circle {
+            fill: deepskyblue;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        var data = [
+            { id: '1', name: '甲', friends: 5, salary: 22000 },
+            { id: '2', name: '乙', friends: 3, salary: 18000 },
+            { id: '3', name: '丙', friends: 10, salary: 88000 },
+            { id: '4', name: '丁', friends: 1, salary: 180000 },
+            { id: '5', name: '张三', friends: 27, salary: 56000 },
+            { id: '6', name: '李四', friends: 8, salary: 74000 }];
+
+        var svgWidth = 640, svgHeight = 480, svgPadding = 50;
+        var svg = d3.select('body')
+            .append('svg')
+            .attr('class', 'svg')
+            .style('width', svgWidth)
+            .style('height', svgHeight);
+
+        // 定义比例尺
+        var xScale = d3.scaleLinear()
+            .domain([0, d3.max(data, (d) => { return d.salary }) + 5000])
+            .range([svgPadding, svgWidth - svgPadding]);
+        var yScale = d3.scaleLinear()
+            .domain([0, d3.max(data, (d) => { return d.friends }) + 5])
+            .range([svgHeight - svgPadding, svgPadding]);
+
+        function drawAsix() {
+            // 定义坐标轴
+            var xAsix = d3.axisBottom(xScale).ticks(7);
+            var yAsix = d3.axisLeft(yScale);
+            // 绘制x坐标轴
+            svg.append('g')
+                .attr('transform', `translate(0, ${svgHeight - svgPadding})`)
+                .attr('id', 'xAsix')
+                .call(xAsix);
+            // 绘制y坐标轴
+            svg.append('g')
+                .attr('transform', `translate(${svgPadding}, 0)`)
+                .attr('id', 'yAsix')
+                .call(yAsix);
+
+            // 绘制y坐标轴刻度平行线
+            svg.select("#yAsix")
+                .selectAll("line")
+                .attr("x2", svgWidth - svgPadding * 2)
+                .attr("x1", "-6")
+                .attr('stroke', 'gray')
+        }
+
+        function drawCircle() {
+            svg.selectAll('circle')
+                .data(data)
+                .enter().append('circle')
+                .attr('r', 5)
+                .attr('cx', (d, i) => {
+                    return xScale(d.salary);
+                })
+                .attr('cy', (d, i) => {
+                    return yScale(d.friends);
+                })
+                .attr('class', 'circle');
+        }
+
+        function drawLine() {
+            var line = d3.line()
+                .x(function (d) { return xScale(d.salary); })
+                .y(function (d) { return yScale(d.friends); })
+            // .curve(d3.curveCatmullRom.alpha(0.5));
+
+            svg.append('path')
+                .attr('d', (d) => {
+                    return line(data.sort((a, b) => { return a.salary - b.salary; }))
+                })
+                .attr('fill', 'none')
+                .attr('stroke', 'gray')
+                .attr('stroke-width', 1)
+        }
+
+        function drawText() {
+            svg.append('g').selectAll('text')
+                .data(data)
+                .enter().append('text')
+                .attr('x', (d, i) => {
+                    return xScale(d.salary);
+                })
+                .attr('y', (d, i) => {
+                    return yScale(d.friends) - 7;
+                })
+                .attr('text-anchor', 'middle')
+                .style('font-size', 10)
+                .text((d) => {
+                    return d.name + ' ' + d.salary;
+                })
+        }
+
+        drawAsix();
+        drawCircle();
+        drawLine();
+        drawText();
+    </script>
+</body>
+
+</html>

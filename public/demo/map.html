@@ -23,24 +23,17 @@
             .style('height', svgHeight)
             .append('g')
             .attr('transform', 'translate(0,0)');
+        var color = d3.scaleOrdinal(d3.schemeCategory20);
 
+        // 定义投影
         var projection = d3.geoMercator()
             .center([107, 31])
             .scale(850)
             .translate([svgWidth / 2, svgHeight / 1.6]);
+  
+        var path = d3.geoPath().projection(projection);
 
-        var path = d3.geoPath()
-            .projection(projection);
-
-
-        var color = d3.scaleOrdinal(d3.schemeCategory20);
-
-        d3.json('../js/china.geojson', (err, data) => {
-            bulidMap(data);
-            buildProvinceName(data);
-        });
-
-        function bulidMap(data) {
+        function drawMap(data) {
             svg.selectAll('path')
                 .data(data.features)
                 .enter().append('path')
@@ -58,7 +51,7 @@
                 })
         }
 
-        function buildProvinceName(data) {
+        function drawProvinceName(data) {
             svg.selectAll('text')
                 .data(data.features)
                 .enter()
@@ -70,8 +63,13 @@
                 .style('font-size', 12)
                 .text((d) => {
                     return d.properties.name;
-                })
+                });
         }
+
+        d3.json('../js/china.geojson', (err, data) => {
+            drawMap(data);
+            drawProvinceName(data);
+        });
     </script>
 </body>
 

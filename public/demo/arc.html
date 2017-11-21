@@ -17,12 +17,12 @@
         var data = [1, 1, 2, 3];
 
         var svgWidth = 640, svgHeight = 480;
-
         var svg = d3.select('body')
             .append('svg')
             .attr('class', 'svg')
             .style('width', svgWidth)
             .style('height', svgHeight);
+
 
         var arcs = d3.pie()(data);
         console.log(arcs);
